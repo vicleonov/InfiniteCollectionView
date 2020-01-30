@@ -11,32 +11,28 @@ import UIKit
 class CircularCollectionViewLayout: UICollectionViewFlowLayout {
     
     override func prepare() {
-        
-        let contentHeight = super.collectionViewContentSize.height
-        let contentWidth = super.collectionViewContentSize.width
-        
         let minLineSpacing = self.minimumLineSpacing
-        let horizontalOffset = self.collectionView?.contentOffset.x ?? 0
-        let verticalOffset = self.collectionView?.contentOffset.y ?? 0
+        let contentOffset = self.collectionView?.contentOffset ?? CGPoint()
+        let contentSize = super.collectionViewContentSize
         
-        let rightContentEdge =  contentWidth + minLineSpacing
+        let rightContentEdge =  contentSize.width + minLineSpacing
         let leftContentEdge = CGFloat(0.0)
         let topContentEdge = CGFloat(0.0)
-        let bottomContentEdge = contentHeight + minLineSpacing
+        let bottomContentEdge = contentSize.height + minLineSpacing
         
         // Changing collectionView offset after reaching its content edges
         switch self.scrollDirection {
         case .vertical:
-            if verticalOffset <= topContentEdge {
-                self.collectionView?.contentOffset = CGPoint(x: horizontalOffset, y: contentHeight + minLineSpacing)
-            } else if verticalOffset > bottomContentEdge {
-                self.collectionView?.contentOffset = CGPoint(x: horizontalOffset, y: 0.0)
+            if contentOffset.y <= topContentEdge {
+                self.collectionView?.contentOffset.y = bottomContentEdge
+            } else if contentOffset.y > bottomContentEdge {
+                self.collectionView?.contentOffset.y = topContentEdge
             }
         case .horizontal:
-            if horizontalOffset <= leftContentEdge {
-                self.collectionView?.contentOffset = CGPoint(x: contentWidth + minLineSpacing, y: verticalOffset)
-            } else if horizontalOffset > rightContentEdge {
-                self.collectionView?.contentOffset = CGPoint(x: 0.0, y: verticalOffset)
+            if contentOffset.x <= leftContentEdge {
+                self.collectionView?.contentOffset.x = rightContentEdge
+            } else if contentOffset.x > rightContentEdge {
+                self.collectionView?.contentOffset.x = leftContentEdge
             }
         @unknown default: fatalError("Correct prepare method for CircularCollectionViewLayout")
         }
@@ -45,86 +41,67 @@ class CircularCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     override var collectionViewContentSize: CGSize {
-        
-        let contentHeight = super.collectionViewContentSize.height
-        let contentWidth = super.collectionViewContentSize.width
-        
         let minLineSpacing = self.minimumLineSpacing
-        let collectionViewHeight = self.collectionView?.bounds.size.height ?? 0
-        let collectionViewWidth = self.collectionView?.bounds.size.width ?? 0
+        let contentSize = super.collectionViewContentSize
+        let collectionViewSize = self.collectionView?.bounds.size ?? CGSize()
         
         // Adding collectionView's height/width to the contentSize to allow changing offset unnoticeably without any screen artifacts
         switch self.scrollDirection {
-        case .vertical: return CGSize(width: contentWidth, height: contentHeight + collectionViewHeight + minLineSpacing)
-        case .horizontal: return CGSize(width: contentWidth + collectionViewWidth + minLineSpacing, height: contentHeight)
+        case .vertical: return CGSize(width: contentSize.width, height: contentSize.height + collectionViewSize.height + minLineSpacing)
+        case .horizontal: return CGSize(width: contentSize.width + collectionViewSize.width + minLineSpacing, height: contentSize.height)
         @unknown default: fatalError("Correct collectionViewContentSize method for CircularCollectionViewLayout")
         }
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        
-        let contentHeight = super.collectionViewContentSize.height
-        let contentWidth = super.collectionViewContentSize.width
-        
-        let collectionViewHeight = self.collectionView?.bounds.size.height ?? 0
-        let collectionViewWidth = self.collectionView?.bounds.size.width ?? 0
-        
+        let contentSize = super.collectionViewContentSize
+        let collectionViewSize = self.collectionView?.bounds.size ?? CGSize()
+
         switch self.scrollDirection {
         case .vertical:
-            if (newBounds.origin.y <= collectionViewHeight) || (newBounds.origin.y >= contentHeight - collectionViewHeight) {
+            if (newBounds.origin.y <= collectionViewSize.height) || (newBounds.origin.y >= contentSize.height - collectionViewSize.height) {
                 return true
             }
         case .horizontal:
-            if (newBounds.origin.x <= collectionViewWidth) || (newBounds.origin.x >= contentWidth - collectionViewWidth) {
+            if (newBounds.origin.x <= collectionViewSize.width) || (newBounds.origin.x >= contentSize.width - collectionViewSize.width) {
                 return true
             }
         @unknown default: fatalError("Correct shouldInvalidateLayout method for CircularCollectionViewLayout")
         }
-        
+    
         return super.shouldInvalidateLayout(forBoundsChange: newBounds)
     }
     
-
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let minLineSpacing = self.minimumLineSpacing
+        let contentSize = super.collectionViewContentSize
         
         var layoutAttributes = super.layoutAttributesForElements(in: rect) ?? []
         
-        if self.scrollDirection == .vertical {
-            
-            let wrappingAttributes = super.layoutAttributesForElements(in: CGRect(x: rect.origin.x,
-                                                                                  y: rect.origin.y - super.collectionViewContentSize.height,
-                                                                                  width: rect.size.width,
-                                                                                  height: rect.size.height))
-            
-            wrappingAttributes?.forEach({ attributes in
-                attributes.center = CGPoint(x: attributes.center.x,
-                                            y: attributes.center.y + super.collectionViewContentSize.height + self.minimumLineSpacing)
-            })
-            
-            layoutAttributes += wrappingAttributes ?? []
-
-        } else {
-            
-            let wrappingAttributes = super.layoutAttributesForElements(in: CGRect(x: rect.origin.x - super.collectionViewContentSize.width,
-                                                                                  y: rect.origin.y,
-                                                                                  width: rect.size.width,
-                                                                                  height: rect.size.height))
-            
-            wrappingAttributes?.forEach({ attributes in
-                attributes.center = CGPoint(x: attributes.center.x + super.collectionViewContentSize.width + self.minimumLineSpacing,
-                                            y: attributes.center.y)
-            })
-            
-            layoutAttributes += wrappingAttributes ?? []
-            
+        switch self.scrollDirection {
+        case .vertical:
+            let newRect = CGRect(x: rect.origin.x, y: rect.origin.y - contentSize.height, width: rect.width, height: rect.height)
+            if let wrappingAttributes = super.layoutAttributesForElements(in: newRect) {
+                wrappingAttributes.forEach{ $0.center.y += contentSize.height + minLineSpacing }
+                layoutAttributes += wrappingAttributes
+            }
+        case .horizontal:
+            let newRect = CGRect(x: rect.origin.x - contentSize.width, y: rect.origin.y, width: rect.width, height: rect.height)
+            if let wrappingAttributes = super.layoutAttributesForElements(in: newRect){
+                wrappingAttributes.forEach{ $0.center.x += contentSize.width + minLineSpacing }
+                layoutAttributes += wrappingAttributes
+            }
+        @unknown default: fatalError("Correct generateLayoutAttributes method for CircularCollectionViewLayout")
         }
         
         return layoutAttributes
     }
     
     open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let collectionViewSize = self.collectionView?.bounds.size ?? CGSize()
+        
         let layoutAttributes = super.layoutAttributesForItem(at: indexPath)
-        layoutAttributes?.center = CGPoint(x: (layoutAttributes?.center.x ?? 0) + (self.collectionView?.bounds.size.width ?? 0), y: layoutAttributes?.center.y ?? 0)
+        layoutAttributes?.center.x += collectionViewSize.width
         
         return layoutAttributes
     }
