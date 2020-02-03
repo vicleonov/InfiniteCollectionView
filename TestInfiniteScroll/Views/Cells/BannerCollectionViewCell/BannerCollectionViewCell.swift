@@ -11,8 +11,10 @@ import UIKit
 class BannerCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var cellWidth: NSLayoutConstraint!
-    
+
+    override func awakeFromNib() {
+        self.layer.cornerRadius = 8
+    }
     
     
 }
