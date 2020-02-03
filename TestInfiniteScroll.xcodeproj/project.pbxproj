@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -78,9 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				7744BB2923E2B22A002D0435 /* Delegates */,
-				7744BB2C23E2B2BE002D0435 /* View */,
+				7744BB2C23E2B2BE002D0435 /* Views */,
 				7744BB2D23E2B2FD002D0435 /* Controller */,
-				7744BB2A23E2B24A002D0435 /* Sources */,
+				7744BB2A23E2B24A002D0435 /* Resources */,
 				7744BB2B23E2B27D002D0435 /* Others */,
 				7744BAFC23E193B9002D0435 /* LaunchScreen.storyboard */,
 				7744BAFF23E193B9002D0435 /* Info.plist */,
@@ -106,12 +106,12 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		7744BB2A23E2B24A002D0435 /* Sources */ = {
+		7744BB2A23E2B24A002D0435 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				7744BAFA23E193B9002D0435 /* Assets.xcassets */,
 			);
-			path = Sources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		7744BB2B23E2B27D002D0435 /* Others */ = {
@@ -122,13 +122,13 @@
 			path = Others;
 			sourceTree = "<group>";
 		};
-		7744BB2C23E2B2BE002D0435 /* View */ = {
+		7744BB2C23E2B2BE002D0435 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				7744BAF723E193B5002D0435 /* Main.storyboard */,
 				7744BB2423E2AD01002D0435 /* Cells */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7744BB2D23E2B2FD002D0435 /* Controller */ = {
@@ -161,7 +161,6 @@
 				AE0B0E46CF18F49F712A71CE /* Pods-TestInfiniteScroll.debug.xcconfig */,
 				C669CEB916F543F19A68993B /* Pods-TestInfiniteScroll.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
