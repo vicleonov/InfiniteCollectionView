@@ -16,6 +16,7 @@
 		7744BB0623E19454002D0435 /* CircularCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7744BB0523E19454002D0435 /* CircularCollectionViewLayout.swift */; };
 		7744BB2623E2AD51002D0435 /* BannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7744BB2523E2AD51002D0435 /* BannerCollectionViewCell.xib */; };
 		7744BB2823E2AD8C002D0435 /* BannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7744BB2723E2AD8C002D0435 /* BannerCollectionViewCell.swift */; };
+		77A841F923E8166900E4388D /* GTMCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A841F823E8166900E4388D /* GTMCollectionViewLayout.swift */; };
 		D6A46CC49ED92B83B4CB926A /* Pods_TestInfiniteScroll.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E7CB8ACC2C7C6F63214298 /* Pods_TestInfiniteScroll.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		7744BB0523E19454002D0435 /* CircularCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularCollectionViewLayout.swift; sourceTree = "<group>"; };
 		7744BB2523E2AD51002D0435 /* BannerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BannerCollectionViewCell.xib; sourceTree = "<group>"; };
 		7744BB2723E2AD8C002D0435 /* BannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCollectionViewCell.swift; sourceTree = "<group>"; };
+		77A841F823E8166900E4388D /* GTMCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTMCollectionViewLayout.swift; sourceTree = "<group>"; };
 		AE0B0E46CF18F49F712A71CE /* Pods-TestInfiniteScroll.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestInfiniteScroll.debug.xcconfig"; path = "Target Support Files/Pods-TestInfiniteScroll/Pods-TestInfiniteScroll.debug.xcconfig"; sourceTree = "<group>"; };
 		C669CEB916F543F19A68993B /* Pods-TestInfiniteScroll.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestInfiniteScroll.release.xcconfig"; path = "Target Support Files/Pods-TestInfiniteScroll/Pods-TestInfiniteScroll.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				7744BB0523E19454002D0435 /* CircularCollectionViewLayout.swift */,
+				77A841F823E8166900E4388D /* GTMCollectionViewLayout.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7744BAF623E193B5002D0435 /* ViewController.swift in Sources */,
+				77A841F923E8166900E4388D /* GTMCollectionViewLayout.swift in Sources */,
 				7744BAF223E193B5002D0435 /* AppDelegate.swift in Sources */,
 				7744BB0623E19454002D0435 /* CircularCollectionViewLayout.swift in Sources */,
 				7744BB2823E2AD8C002D0435 /* BannerCollectionViewCell.swift in Sources */,
