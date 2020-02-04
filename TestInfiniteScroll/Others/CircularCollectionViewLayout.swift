@@ -16,6 +16,7 @@ class CircularCollectionViewLayout: UICollectionViewFlowLayout {
         
         let rightContentEdge =  contentSize.width + minimumLineSpacing
         let leftContentEdge = CGFloat(0.0)
+        
         let topContentEdge = CGFloat(0.0)
         let bottomContentEdge = contentSize.height + minimumLineSpacing
         
@@ -48,7 +49,7 @@ class CircularCollectionViewLayout: UICollectionViewFlowLayout {
         case .vertical:
             return CGSize(width: contentSize.width, height: contentSize.height + collectionViewSize.height + minimumLineSpacing)
         case .horizontal:
-            return CGSize(width: contentSize.width + collectionViewSize.width + minimumInteritemSpacing, height: contentSize.height)
+            return CGSize(width: contentSize.width + collectionViewSize.width + minimumLineSpacing, height: contentSize.height)
         @unknown default: fatalError("Correct collectionViewContentSize method for CircularCollectionViewLayout")
         }
     }
@@ -126,22 +127,26 @@ class CircularCollectionViewLayout: UICollectionViewFlowLayout {
             let collectionCenter = collectionView!.bounds.width / 2
             let proposedCentrationOffset = proposedContentOffset.x + collectionCenter
             
+//            print("proposedCentrationOffset: \(proposedCentrationOffset)")
+            
             let closest = layoutAttributes!.sorted{ abs($0.center.x - proposedCentrationOffset) < abs($1.center.x - proposedCentrationOffset) }.first ?? UICollectionViewLayoutAttributes()
+//            print(layoutAttributes![0].center.x)
+//            print(layoutAttributes![0].center.x - proposedCentrationOffset)
+//            print(layoutAttributes![1].center.x)
+//            print(layoutAttributes![1].center.x - proposedCentrationOffset)
             
-            let stopPosition = floor(closest.center.x - collectionCenter)
+//            print("closest X: \(closest.center.x)")
             
-
-//            targetContentOffset = CGPoint(x: floor(closest.center.x - stopPosition), y: proposedContentOffset.y)
+            var stopPosition = floor(closest.center.x - collectionCenter)
             
             if stopPosition < 0 {
-                targetContentOffset = CGPoint(x: 2450.0, y: proposedContentOffset.y)
-                print(itemSize)
-                print(collectionViewContentSize)
-            } else {
-                targetContentOffset = CGPoint(x: stopPosition, y: proposedContentOffset.y)
+                stopPosition = collectionViewContentSize.width - collectionView!.bounds.width + closest.center.x - proposedCentrationOffset
+                
             }
             
+//            print(stopPosition)
 
+            targetContentOffset = CGPoint(x: stopPosition, y: proposedContentOffset.y)
             
         @unknown default: fatalError("Correct targetContentOffset method for CircularCollectionViewLayout")
         }

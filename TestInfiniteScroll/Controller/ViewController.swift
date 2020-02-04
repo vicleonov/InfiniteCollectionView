@@ -24,8 +24,8 @@ class ViewController: UIViewController {
         
         self.collectionView.register(UINib(nibName: "BannerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "BannerCollectionViewCell")
 
-       
         collectionView.reloadData()
+        
     }
  
 }
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return bannerImages.count
+        return bannerImages.count * 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -42,8 +42,11 @@ extension ViewController: UICollectionViewDataSource {
         
 //        let imageUrl = URL(string: "https://picsum.photos/id/\(indexPath.row)/900/1000")
 //        let placeholderImgage = #imageLiteral(resourceName: "Placeholder")
-        bannerCell?.imageView.image = bannerImages[indexPath.item]
-//        bannerCell?.imageView.kf.setImage(with: imageUrl, placeholder: placeholderImgage)
+        
+        let index = indexPath.item % (bannerImages.count - 1)
+        
+        bannerCell?.imageView.image = bannerImages[index]
+//        bannerCell?.imageView.kf.setImage(wit h: imageUrl, placeholder: placeholderImgage)
 //        bannerCell?.cellWidth.constant = collectionView.bounds.height / 1.3
         
         return bannerCell ?? UICollectionViewCell()
@@ -66,8 +69,6 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: cellWidth, height: cellHeight)
     }
 
-    
-    
 //    - (void)collectionView:(UICollectionView *)collectionView didUpdateFocusInContext:(UICollectionViewFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator
 //    {
 //        // As we are not using the default scrollable feature from the UIScrollView,
