@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     
     let bannersNumber = 9
     let bannerImages = [#imageLiteral(resourceName: "Image11"), #imageLiteral(resourceName: "Image12"), #imageLiteral(resourceName: "Image7"), #imageLiteral(resourceName: "Image10"), #imageLiteral(resourceName: "Image8"), #imageLiteral(resourceName: "Image6"), #imageLiteral(resourceName: "Image4"), #imageLiteral(resourceName: "Image5")]
+    let collectionMultiplier = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +27,22 @@ class ViewController: UIViewController {
 
         collectionView.reloadData()
         
+        collectionView.scrollToItem(at: IndexPath(row: bannerImages.count, section: 0), at: .left, animated: false)
     }
- 
+
+//    func scrollCentered(indexPath indexPath: IndexPath, animated: Bool) {
+//        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+//        var attr = layout.layoutAttributesForItem(at: indexPath)
+//        var shift = (collectionView.frame.size.width - attr!.size.width) / 2
+//        collectionView.contentOffset = CGPoint(x: (attr!.frame.origin.x - shift), y: 0)
+//    }
+    
 }
 
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return bannerImages.count * 10
+        return bannerImages.count * collectionMultiplier
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -43,8 +52,9 @@ extension ViewController: UICollectionViewDataSource {
 //        let imageUrl = URL(string: "https://picsum.photos/id/\(indexPath.row)/900/1000")
 //        let placeholderImgage = #imageLiteral(resourceName: "Placeholder")
         
-        let index = indexPath.item % (bannerImages.count - 1)
         
+        let originCount = Float(bannerImages.count)
+        let index = Int(Float(indexPath.item).truncatingRemainder(dividingBy: originCount))
         bannerCell?.imageView.image = bannerImages[index]
 //        bannerCell?.imageView.kf.setImage(wit h: imageUrl, placeholder: placeholderImgage)
 //        bannerCell?.cellWidth.constant = collectionView.bounds.height / 1.3
@@ -63,7 +73,7 @@ extension ViewController: UICollectionViewDelegate {
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         let cellWidth = collectionView.frame.width*0.8
         let cellHeight =  collectionView.frame.height - layout.sectionInset.top*2
         return CGSize(width: cellWidth, height: cellHeight)
